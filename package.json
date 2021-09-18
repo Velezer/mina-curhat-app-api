@@ -11,5 +11,12 @@
     "anonym"
   ],
   "author": "velezer",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-fileupload": "^1.2.1",
+    "express-fileupload-validator": "^2.0.1",
+    "mongoose": "^6.0.6",
+    "socket.io": "^4.2.0"
+  }
 }
