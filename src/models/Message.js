@@ -9,9 +9,9 @@ const Message = mongoose.model('Message', new Schema(
             required: [true, 'chatroom is required'],
             unique: [true, 'chatroom is aready exist'],
         },
-        user: {
+        consultant: {
             type: Schema.Types.ObjectId,
-            required: [true, 'user required']
+            required: [true, 'consultant required']
         },
         message: {
             type: String,
