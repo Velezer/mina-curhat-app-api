@@ -4,6 +4,7 @@
   "description": "chat anonymously api",
   "main": "app.js",
   "scripts": {
+    "start": "node ./src/app",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
