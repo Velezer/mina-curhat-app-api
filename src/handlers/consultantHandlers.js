@@ -13,13 +13,12 @@ exports.register = async (req, res) => {
 
 }
 exports.login = async (req, res) => {
-
     const { name, password } = req.body
 
     const consultant = await Consultant.findOne({ name, password })
 
     res.status(200).json({
-        message: `User ${name} logged in`
+        message: `User ${consultant.name} logged in`
     })
 
 }

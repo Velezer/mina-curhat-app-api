@@ -4,11 +4,12 @@
   "description": "chat anonymously api",
   "main": "app.js",
   "scripts": {
-    "start": "node ./src/app",
+    "start": "node ./src/server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
     "curhat",
+    "chat",
     "anonym"
   ],
   "author": "velezer",
