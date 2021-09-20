@@ -1,29 +1,34 @@
 {
   "name": "mina-curhat-app-api",
   "version": "1.0.0",
-  "description": "chat anonymously api",
+  "description": "chat anonymously to a consultant api",
   "main": "app.js",
   "scripts": {
-    "start": "node ./src/server",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Velezer/mina-curhat-app-api.git"
   },
   "keywords": [
     "curhat",
-    "chat",
     "consult",
-    "consultant",
+    "chat",
     "anonym"
   ],
   "author": "velezer",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Velezer/mina-curhat-app-api/issues"
+  },
+  "homepage": "https://github.com/Velezer/mina-curhat-app-api#readme",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
-    "express-fileupload": "^1.2.1",
-    "express-fileupload-validator": "^2.0.1",
     "express-validator": "^6.12.1",
     "jwt-then": "^1.0.1",
     "mongoose": "^6.0.6",
-    "socket.io": "^4.2.0"
+    "path-is-absolute": "^2.0.0"
   }
 }
