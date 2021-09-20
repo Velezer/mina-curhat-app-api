@@ -8,3 +8,9 @@ exports.validationError = (req, res, next) => {
     }
     next()
 }
+
+exports.commonError=(err, req, res, next) =>{
+    console.error(err.stack);
+  
+    res.status(500).json({ errors: err })
+  }

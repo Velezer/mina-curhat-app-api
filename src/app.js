@@ -11,5 +11,6 @@ app.use(errorsMiddleware.validationError);
 app.use('/consultant', require("./routes/consultant"))
 app.use('/chatroom', require("./routes/chatroom"))
 
+app.use(errorsMiddleware.commonError);
 
 module.exports = app

@@ -7,7 +7,7 @@ exports.verify = async (req, res) => {
     const result = await jwt.verify(token, process.env.JWT_KEY)
 
     res.status(200).json({
-        message: `User ${consultant.name} logged in`,
+        // message: `User ${result.name} logged in`,
         result: result
     })
 }

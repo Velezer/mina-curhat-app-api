@@ -1,20 +1,23 @@
 const Consultant = require("../models/Consultant")
+const bcrypt = require('bcrypt')
+require("dotenv").config()
+const jwt = require("jwt-then")
 
 exports.register = async (req, res) => {
     const { name, password } = req.body
 
-    const consultant = new Consultant({ name, password })
-    await consultant.save()
 
+    bcrypt.hash(password, process.env.SALT, async (err, hash) => {
+        let consultant = new Consultant({ name, password: hash })
+        consultant = await consultant.save()
 
-    res.status(201).json({
-        message: `User ${name} created`
-    })
+        res.status(201).json({
+            message: `User ${consultant.name} created`
+        })
+    });
 
 }
 
-const jwt = require("jwt-then")
-// require("dotenv").config()
 
 exports.login = async (req, res) => {
     const { name, password } = req.body
@@ -25,7 +28,10 @@ exports.login = async (req, res) => {
             message: `user ${consultant.name} not found`,
         })
     }
-    if (consultant.password !== password) {
+
+    const match = await bcrypt.compare(password, consultant.password)
+
+    if (!match) {
         return res.status(400).json({
             message: `password doesn't match`,
         })
@@ -36,5 +42,4 @@ exports.login = async (req, res) => {
         message: `User ${consultant.name} logged in`,
         token: token
     })
-
 }
