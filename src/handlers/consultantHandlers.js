@@ -8,15 +8,14 @@ exports.register = async (req, res) => {
     bcrypt.hash(password, 10, async (err, hash) => {
         let consultant = new Consultant({ name, password: hash })
 
-        try {
-            consultant = await consultant.save()
-        } catch (err) {
-            res.status(400).json({ errors: err })
-        }
+        await consultant.save()
+            .then(() => {
+                res.status(201).json({
+                    message: `User ${consultant.name} created`
+                })
+            })
+            .catc(err => res.status(400).json({ errors: err }))
 
-        res.status(201).json({
-            message: `User ${consultant.name} created`
-        })
     });
 
 }
