@@ -7,7 +7,7 @@ const httpServer = require("http").createServer(app);
     
 // });
 
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 3001
 httpServer.listen(port, () => {
     console.log(`server listening on port ${port}`)
 })

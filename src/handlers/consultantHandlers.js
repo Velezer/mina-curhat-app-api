@@ -4,6 +4,7 @@ require("dotenv").config()
 const jwt = require("jwt-then")
 
 exports.register = async (req, res) => {
+
     const { name, password } = req.body
 
 
