@@ -9,6 +9,10 @@ const Chatroom = mongoose.model('Chatroom', new Schema(
             required: [true, 'name is required'],
             unique: [true, 'name is aready exist'],
         },
+        // consultant: {
+        //     type: Schema.Types.ObjectId,
+        //     required: [true, 'consultant required']
+        // },
 
     },
 ))
