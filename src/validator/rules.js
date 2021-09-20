@@ -20,3 +20,7 @@ exports.chatroom = [
     body(`name`, `name is empty`).notEmpty(),
     validate
 ]
+exports.jwt = [
+    body(`token`, `token is empty`).notEmpty(),
+    validate
+]
