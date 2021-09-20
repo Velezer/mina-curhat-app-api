@@ -1,15 +1,11 @@
 const express = require("express")
 const errorsMiddleware = require("./middleware/errors")
-const rules = require("./validator/rules")
-app = express()
 
+const app = express()
 
-app.use(express.json())
+// app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-app.use('/api/*', rules.jwt, require("./middleware/jwt").verify)
-
-app.use('/jwt', require("./routes/jwt"))
 
 
 

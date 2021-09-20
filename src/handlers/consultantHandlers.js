@@ -1,11 +1,20 @@
 const Consultant = require("../models/Consultant")
 const bcrypt = require('bcrypt')
+const jwt = require("jwt-then")
+require("dotenv").config()
 
 exports.register = async (req, res, next) => {
 
     const { name, password } = req.body
 
-    bcrypt.hash(password, 10, async (err, hash) => {
+    const consultant = await Consultant.findOne({ name })
+    if (consultant.name === name) {
+        const err = new Error(`user ${consultant.name} already exist`)
+        err.code = 400
+        next(err)
+    }
+    // eslint-disable-next-line no-undef
+    bcrypt.hash(password, Number(process.env.SALT_OR_ROUNDS), async (err, hash) => {
         let consultant = new Consultant({ name, password: hash })
 
         await consultant.save()
@@ -14,7 +23,7 @@ exports.register = async (req, res, next) => {
                     message: `User ${consultant.name} created`
                 })
             })
-            .catc(err => {
+            .catch(err => {
                 err.code = err.code || 500
                 next(err)
             })
@@ -22,5 +31,32 @@ exports.register = async (req, res, next) => {
     });
 
 }
+
+exports.login = async (req, res, next) => {
+    const { name, password } = req.body
+
+    const consultant = await Consultant.findOne({ name })
+    if (consultant === null) {
+        const err = new Error(`user ${consultant.name} not found`)
+        err.code = 404
+        next(err)
+    }
+
+    const match = await bcrypt.compare(password, consultant.password)
+
+    if (!match) {
+        const err = new Error(`password doesn't match`)
+        err.code = 400
+        next(err)
+    }
+    // eslint-disable-next-line no-undef
+    const token = await jwt.sign({ name, password: consultant.password }, process.env.JWT_KEY)
+
+    res.status(200).json({
+        message: `User ${consultant.name} logged in`,
+        token: token
+    })
+}
+
 
 

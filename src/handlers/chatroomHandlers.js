@@ -5,9 +5,14 @@ exports.createChatroom = async (req, res) => {
 
     const chatroom = new Chatroom({ name })
     await chatroom.save()
-
-
-    res.status(201).json({
-        message: `chatroom ${name} created`
+    .then(() => {
+        res.status(201).json({
+            message: `chatroom ${name} created`
+        })
     })
+    .catch(err => {
+        err.code = err.code || 500
+    })
+
+   
 }
