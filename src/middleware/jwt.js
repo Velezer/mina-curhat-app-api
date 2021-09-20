@@ -6,6 +6,9 @@ exports.verify = async (req, res, next) => {
 
     await jwt.verify(token, process.env.JWT_KEY)
         .then(() => next())
-        .catch(err => res.status(401).json({ errors: err }))
+        .catch(err => {
+            err.code = err.code || 401
+            next(err)
+        })
 
 }

@@ -1,7 +1,7 @@
 const Consultant = require("../models/Consultant")
 const bcrypt = require('bcrypt')
 
-exports.register = async (req, res) => {
+exports.register = async (req, res, next) => {
 
     const { name, password } = req.body
 
@@ -14,7 +14,10 @@ exports.register = async (req, res) => {
                     message: `User ${consultant.name} created`
                 })
             })
-            .catc(err => res.status(400).json({ errors: err }))
+            .catc(err => {
+                err.code = err.code || 500
+                next(err)
+            })
 
     });
 

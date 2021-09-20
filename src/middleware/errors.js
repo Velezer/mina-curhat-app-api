@@ -2,6 +2,7 @@
 
 exports.commonError = (err, req, res, next) => {
     console.error(err.stack);
+    err.code = err.code || 500
 
-    res.status(500).json({ errors: err })
+    res.status(err.code).json({ message: err.message })
 }

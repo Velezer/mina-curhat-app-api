@@ -2,22 +2,22 @@ const jwt = require("jwt-then")
 require("dotenv").config()
 
 
-exports.login = async (req, res) => {
+exports.login = async (req, res, next) => {
     const { name, password } = req.body
 
     const consultant = await Consultant.findOne({ name })
     if (consultant === null) {
-        return res.status(404).json({
-            message: `user ${consultant.name} not found`,
-        })
+        const err = new Error(`user ${consultant.name} not found`)
+        err.code = 404
+        next(err)
     }
 
     const match = await bcrypt.compare(password, consultant.password)
 
     if (!match) {
-        return res.status(400).json({
-            message: `password doesn't match`,
-        })
+        const err = new Error(`password doesn't match`)
+        err.code = 400
+        next(err)
     }
     const token = await jwt.sign({ name: consultant.name, password: consultant.password }, process.env.JWT_KEY)
 
