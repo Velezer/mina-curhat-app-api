@@ -10,11 +10,12 @@ exports.register = async (req, res, next) => {
     const consultant = await Consultant.findOne({ name })
     if (consultant.name === name) {
         const err = new Error(`user ${consultant.name} already exist`)
-        err.code = 400
+        err.code = 409
         next(err)
     }
     // eslint-disable-next-line no-undef
     bcrypt.hash(password, Number(process.env.SALT_OR_ROUNDS), async (err, hash) => {
+        if (err) next(err)
         let consultant = new Consultant({ name, password: hash })
 
         await consultant.save()
@@ -23,10 +24,7 @@ exports.register = async (req, res, next) => {
                     message: `User ${consultant.name} created`
                 })
             })
-            .catch(err => {
-                err.code = err.code || 500
-                next(err)
-            })
+            .catch(err => next(err))
 
     });
 

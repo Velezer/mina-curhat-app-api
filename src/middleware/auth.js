@@ -11,7 +11,8 @@ module.exports = async (req, res, next) => {
     const token = authorization.split('Bearer ')[1]
     // eslint-disable-next-line no-undef
     await jwt.verify(token, process.env.JWT_KEY)
-        .then(() => {
+        .then((payload) => {
+            req.payload = payload;
             next()
         })
         .catch(err => {
