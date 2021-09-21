@@ -14,6 +14,7 @@ app.use(express.urlencoded({ extended: true }))
 
 app.use('/api/consultant', require("./routes/consultant"))
 app.use('/api/chatroom', require("./routes/chatroom"))
+app.use('/api/anonym', require("./routes/anonym"))
 
 app.use(errorsMiddleware.expressError);
 

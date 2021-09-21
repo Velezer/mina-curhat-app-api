@@ -15,7 +15,11 @@ io.use(auth) // pass payload to socket.payload on success
 
 io.on("connection", socket => {
     console.log(socket.payload)
+    console.log(`connected as ${socket.payload.role}`)
 
+    socket.on("disconnect", () => {
+        // socket.rooms.size === 0
+      });
 });
 
 // eslint-disable-next-line no-undef

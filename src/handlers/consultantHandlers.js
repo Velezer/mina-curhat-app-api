@@ -48,7 +48,7 @@ exports.login = async (req, res, next) => {
         next(err)
     }
     // eslint-disable-next-line no-undef
-    const token = await jwt.sign({ name, password: consultant.password }, process.env.JWT_KEY)
+    const token = await jwt.sign({ name, password: consultant.password, role: 'consultant' }, process.env.JWT_KEY)
 
     res.status(200).json({
         message: `User ${consultant.name} logged in`,
