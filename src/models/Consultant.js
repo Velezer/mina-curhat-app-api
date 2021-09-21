@@ -12,7 +12,6 @@ const Consultant = mongoose.model('Consultant', new Schema(
         password: {
             type: String,
             required: [true, 'password is required'],
-            unique: [true, 'password is aready exist'],
         },
 
     },

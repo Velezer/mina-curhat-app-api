@@ -7,12 +7,11 @@ exports.createChatroom = async (req, res, next) => {
     await chatroom.save()
         .then(() => {
             res.status(201).json({
-                message: `chatroom ${name} created`
+                message: `chatroom ${name} created`,
+                chatroom
             })
         })
         .catch(err => next(err))
-
-
 }
 
 exports.getChatrooms = async (req, res) => {
@@ -21,7 +20,18 @@ exports.getChatrooms = async (req, res) => {
     const chatrooms = await Chatroom.find({ consultant, anonym })
 
     res.status(200).json({
-        message: `get all consultants`,
+        message: `getChatrooms`,
         chatrooms
     })
-};
+}
+
+exports.getChatroomsById = async (req, res) => {
+    const { _id } = req.body
+
+    const chatrooms = await Chatroom.findOne({ _id })
+
+    res.status(200).json({
+        message: `getChatroomsById`,
+        chatrooms
+    })
+}

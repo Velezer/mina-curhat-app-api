@@ -1,6 +1,7 @@
 require("./db")
+const Message = require("./models/Message")
 const app = require("./app")
-const httpServer = require("http").createServer(app);
+const httpServer = require("http").createServer(app)
 const io = require("socket.io")(httpServer, {
     cors: {
         origin: "*",
@@ -19,8 +20,35 @@ io.on("connection", socket => {
 
     socket.on("disconnect", () => {
         // socket.rooms.size === 0
-      });
-});
+        console.log(`${socket.payload.role} ${socket.payload.name} disconnected`)
+    })
+
+    socket.on("joinRoom", ({ chatroomId }) => {
+        socket.join(chatroomId)
+        console.log(`${socket.payload.role} ${socket.payload.name} joined ${chatroomId}`)
+    })
+
+    socket.on("leaveRoom", ({ chatroomId }) => {
+        socket.leave(chatroomId)
+        console.log(`${socket.payload.role} ${socket.payload.name} left ${chatroomId}`)
+    })
+
+    socket.on("sendMessage", async ({ chatroomId, message }) => {
+        const newMessage = new Message({
+            chatroom: chatroomId,
+            sender: socket.payload.name,
+            role: socket.payload.role,
+            message,
+        })
+
+        io.to(chatroomId).emit("newMessage", {
+            sender: socket.payload.name,
+            role: socket.payload.role,
+            message,
+        })
+        await newMessage.save()
+    })
+})
 
 // eslint-disable-next-line no-undef
 const port = process.env.PORT || 3001

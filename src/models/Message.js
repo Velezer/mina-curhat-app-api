@@ -7,12 +7,15 @@ const Message = mongoose.model('Message', new Schema(
         chatroom: {
             type: Schema.Types.ObjectId,
             required: [true, 'chatroom is required'],
-            unique: [true, 'chatroom is aready exist'],
             ref: 'Chatroom'
         },
         sender: {
             type: String,
             required: [true, 'sender required'],
+        },
+        role: {
+            type: String,
+            required: [true, 'role required'],
         },
         message: {
             type: String,
