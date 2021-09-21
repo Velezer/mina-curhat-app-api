@@ -6,6 +6,6 @@ const rules = require("../validator/rules")
 router.post('/register', rules.consultant, consultantHandlers.register)
 router.post('/login', rules.consultant, consultantHandlers.login)
 
-router.get('/consultants', consultantHandlers.getConsultants)
+router.get('/', consultantHandlers.getConsultants)
 
 module.exports = router
