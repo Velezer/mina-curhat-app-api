@@ -1,9 +1,9 @@
 const Chatroom = require("../models/Chatroom")
 
 exports.createChatroom = async (req, res, next) => {
-    const { name } = req.body
+    const { name, consultant, anonym } = req.body
 
-    const chatroom = new Chatroom({ name })
+    const chatroom = new Chatroom({ name, consultant, anonym })
     await chatroom.save()
         .then(() => {
             res.status(201).json({
