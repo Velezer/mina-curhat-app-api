@@ -8,6 +8,7 @@ exports.login = async (req, res) => {
     const token = await jwt.sign({ anonym }, process.env.JWT_KEY)
 
     res.status(200).json({
+        message: `your anonym id can only be used within one week`,
         token: token
     })
 }

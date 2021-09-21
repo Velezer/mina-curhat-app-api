@@ -56,5 +56,14 @@ exports.login = async (req, res, next) => {
     })
 }
 
+exports.getConsultants = async (req, res) => {
+
+    const consultants = await Consultant.find({})
+
+    res.status(200).json({
+        message: `get all consultants`,
+        consultants
+    })
+}
 
 

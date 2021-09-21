@@ -14,3 +14,14 @@ exports.createChatroom = async (req, res, next) => {
 
 
 }
+
+exports.getChatrooms = async (req, res) => {
+    const { consultant, anonym } = req.body
+
+    const chatrooms = await Chatroom.find({ consultant, anonym })
+
+    res.status(200).json({
+        message: `get all consultants`,
+        chatrooms
+    })
+};
