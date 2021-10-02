@@ -7,3 +7,6 @@ mongoose.connect(process.env.DB_URI, { useNewUrlParser: true, useUnifiedTopology
         console.log(`connected db`)
     })
     .catch(err => console.error(err))
+
+
+module.exports = { Chatroom, Consultant, Message }
