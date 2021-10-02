@@ -1,4 +1,3 @@
-const Consultant = require("../models/Consultant")
 const bcrypt = require('bcrypt')
 const jwt = require("jwt-then")
 require("dotenv").config()
@@ -7,6 +6,7 @@ exports.register = async (req, res, next) => {
 
     const { name, password } = req.body
 
+    const { Consultant } = req.db
     const consultant = await Consultant.findOne({ name })
     if (consultant.name === name) {
         const err = new Error(`user ${consultant.name} already exist`)
@@ -16,15 +16,18 @@ exports.register = async (req, res, next) => {
     // eslint-disable-next-line no-undef
     bcrypt.hash(password, Number(process.env.SALT_OR_ROUNDS), async (err, hash) => {
         if (err) next(err)
-        let consultant = new Consultant({ name, password: hash })
+        else {
 
-        await consultant.save()
-            .then(() => {
-                res.status(201).json({
-                    message: `User ${consultant.name} created`
+            let consultant = new Consultant({ name, password: hash })
+
+            await consultant.save()
+                .then(() => {
+                    res.status(201).json({
+                        message: `User ${consultant.name} created`
+                    })
                 })
-            })
-            .catch(err => next(err))
+                .catch(err => next(err))
+        }
 
     })
 
@@ -33,6 +36,7 @@ exports.register = async (req, res, next) => {
 exports.login = async (req, res, next) => {
     const { name, password } = req.body
 
+    const { Consultant } = req.db
     const consultant = await Consultant.findOne({ name })
     if (consultant === null) {
         const err = new Error(`user ${consultant.name} not found`)
@@ -58,6 +62,7 @@ exports.login = async (req, res, next) => {
 
 exports.getConsultants = async (req, res) => {
 
+    const { Consultant } = req.db
     const consultants = await Consultant.find({})
 
     res.status(200).json({
