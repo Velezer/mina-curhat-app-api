@@ -7,7 +7,7 @@ module.exports = async (socket, next) => {
     // eslint-disable-next-line no-undef
     await jwt.verify(token, process.env.JWT_KEY)
         .then((payload) => {
-            socket.payload = payload;
+            socket.payload = payload
             next()
         })
         .catch(err => {

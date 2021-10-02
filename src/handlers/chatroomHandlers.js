@@ -8,7 +8,7 @@ exports.createChatroom = async (req, res, next) => {
         .then(() => {
             res.status(201).json({
                 message: `chatroom ${name} created`,
-                chatroom
+                data: chatroom
             })
         })
         .catch(err => next(err))
@@ -22,7 +22,7 @@ exports.getChatrooms = async (req, res) => {
 
     res.status(200).json({
         message: `getChatrooms`,
-        chatrooms
+        data: chatrooms
     })
 }
 
@@ -34,6 +34,6 @@ exports.getChatroomsById = async (req, res) => {
 
     res.status(200).json({
         message: `getChatroomsById`,
-        chatrooms
+        data: chatrooms
     })
 }
