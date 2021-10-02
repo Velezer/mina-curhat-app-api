@@ -12,7 +12,7 @@ const io = require("socket.io")(httpServer, {
 })
 
 const auth = require("./middleware/auth-io")
-io.use(auth) // pass payload to socket.payload on success
+io.use(auth) // assign value of payload to socket.payload on success
 
 io.on("connection", socket => {
     console.log(socket.payload)
