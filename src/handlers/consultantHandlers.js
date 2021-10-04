@@ -1,5 +1,3 @@
-const bcrypt = require('bcrypt')
-const jwt = require("jwt-then")
 require("dotenv").config()
 
 exports.register = async (req, res, next) => {
@@ -7,30 +5,21 @@ exports.register = async (req, res, next) => {
     const { name, password } = req.body
 
     const { Consultant } = req.db
-    const consultant = await Consultant.findOne({ name })
-    if (consultant.name === name) {
-        const err = new Error(`user ${consultant.name} already exist`)
+    const found = await Consultant.findOne({ name })
+    if (found) {
+        const err = new Error(`user ${name} already exist`)
         err.code = 409
-        next(err)
+        return next(err)
     }
-    // eslint-disable-next-line no-undef
-    bcrypt.hash(password, Number(process.env.SALT_OR_ROUNDS), async (err, hash) => {
-        if (err) next(err)
-        else {
+    const bcrypt = req.bcrypt
+    const hashed = await bcrypt.hash(password, Number(process.env.SALT_OR_ROUNDS))
 
-            let consultant = new Consultant({ name, password: hash })
+    let newConsultant = new Consultant({ name, password: hashed })
 
-            await consultant.save()
-                .then(() => {
-                    res.status(201).json({
-                        message: `User ${consultant.name} created`
-                    })
-                })
-                .catch(err => next(err))
-        }
-
+    newConsultant = await newConsultant.save()
+    res.status(201).json({
+        message: `Consultant ${newConsultant.name} created`
     })
-
 }
 
 exports.login = async (req, res, next) => {
@@ -39,19 +28,21 @@ exports.login = async (req, res, next) => {
     const { Consultant } = req.db
     const consultant = await Consultant.findOne({ name })
     if (consultant === null) {
-        const err = new Error(`user ${consultant.name} not found`)
+        const err = new Error(`user ${name} not found`)
         err.code = 404
-        next(err)
+        return next(err)
     }
 
+    const bcrypt = req.bcrypt
     const match = await bcrypt.compare(password, consultant.password)
 
     if (!match) {
         const err = new Error(`password doesn't match`)
         err.code = 400
-        next(err)
+        return next(err)
     }
-    // eslint-disable-next-line no-undef
+
+    const jwt = req.jwt
     const token = await jwt.sign({ name, role: 'consultant' }, process.env.JWT_KEY)
 
     res.status(200).json({
@@ -67,7 +58,7 @@ exports.getConsultants = async (req, res) => {
 
     res.status(200).json({
         message: `get all consultants`,
-        consultants
+        data: consultants
     })
 }
 

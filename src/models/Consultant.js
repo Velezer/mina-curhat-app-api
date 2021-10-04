@@ -18,5 +18,4 @@ const Consultant = mongoose.model('Consultant', new Schema(
 ))
 
 
-
 module.exports = Consultant
