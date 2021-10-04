@@ -31,6 +31,63 @@ describe('handler anonym --- /api/anonym', () => {
             })
     })
 })
+describe('handler chatrooms --- /api/chatrooms', () => {
+    const jwt_token = 'token'
+    const payloadAnonym = { name: 'anonym', role: 'anonym' }
+    const payloadConsultant = { name: 'consultant', role: 'consultant' }
+    const chatroomData = {
+        name: 'chatroom_name',
+        consultant: 'consultant',
+        anonym: 'anonym',
+        token_chatroom: 'token_chatroom'
+    }
+    it('POST / --> 401 no auth header', async () => {
+        await request(app).post('/api/chatrooms')
+            .expect('Content-Type', /json/)
+            .expect(401, { message: `no auth header` })
+    })
+    it('POST / --> 401 invalid jwt', async () => {
+        jwt.verify.mockRejectedValue(new Error(`jwt invalid`))
+        await request(app).post('/api/chatrooms')
+            .set('Authorization', `Bearer ${jwt_token}`)
+            .expect('Content-Type', /json/)
+            .expect(401)
+    })
+    it('POST / --> 400 no input data but valid jwt', async () => {
+        jwt.verify.mockResolvedValue(payloadAnonym)
+        await request(app).post('/api/chatrooms')
+            .set('Authorization', `Bearer ${jwt_token}`)
+            .expect('Content-Type', /json/)
+            .expect(400)
+    })
+    it('POST / --> 400 role is not anonym', async () => {
+        jwt.verify.mockResolvedValue(payloadConsultant)
+        db.Chatroom.prototype.save.mockResolvedValue()
+        await request(app).post('/api/chatrooms')
+            .set('Authorization', `Bearer ${jwt_token}`)
+            .send(chatroomData)
+            .expect('Content-Type', /json/)
+            .expect(400, { message: 'only anonym can create chatroom' })
+    })
+    it('POST / --> 201 chatroom created', async () => {
+        jwt.verify.mockResolvedValue(payloadAnonym)
+        db.Chatroom.prototype.save.mockResolvedValue()
+        await request(app).post('/api/chatrooms')
+            .set('Authorization', `Bearer ${jwt_token}`)
+            .send(chatroomData)
+            .expect('Content-Type', /json/)
+            .expect(201)
+    })
+    it('POST / --> 201 chatroom created', async () => {
+        jwt.verify.mockResolvedValue(payloadAnonym)
+        db.Chatroom.prototype.save.mockRejectedValue(new Error('save error'))
+        await request(app).post('/api/chatrooms')
+            .set('Authorization', `Bearer ${jwt_token}`)
+            .send(chatroomData)
+            .expect('Content-Type', /json/)
+            .expect(500, { message: 'save error' })
+    })
+})
 describe('handler consultants --- /api/consultants', () => {
     const consultantData = {
         name: 'name',

@@ -1,4 +1,3 @@
-const jwt = require("jwt-then")
 require("dotenv").config()
 
 module.exports = async (req, res, next) => {
@@ -9,10 +8,11 @@ module.exports = async (req, res, next) => {
         return next(err)
     }
     const token = authorization.split('Bearer ')[1]
-    // eslint-disable-next-line no-undef
+
+    const jwt = req.jwt
     await jwt.verify(token, process.env.JWT_KEY)
         .then((payload) => {
-            req.payload = payload;
+            req.payload = payload
             next()
         })
         .catch(err => {

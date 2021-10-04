@@ -1,9 +1,14 @@
 
 exports.createChatroom = async (req, res, next) => {
-    const { name, consultant, anonym } = req.body
+    if (req.payload.role !== 'anonym') {
+        const err = new Error('only anonym can create chatroom')
+        err.code = 400
+        return next(err)
+    }
 
+    const { name, consultant, token_chatroom } = req.body
     const { Chatroom } = req.db
-    const chatroom = new Chatroom({ name, consultant, anonym })
+    const chatroom = new Chatroom({ name, consultant, token_chatroom, anonym: req.payload.name })
     await chatroom.save()
         .then(() => {
             res.status(201).json({
@@ -15,10 +20,17 @@ exports.createChatroom = async (req, res, next) => {
 }
 
 exports.getChatrooms = async (req, res) => {
-    const { consultant, anonym } = req.body
+    const { name, role } = req.payload
 
     const { Chatroom } = req.db
-    const chatrooms = await Chatroom.find({ consultant, anonym })
+
+    let chatrooms = null
+    
+    if (role === 'anonym') {
+        chatrooms = await Chatroom.find({ anonym: name })
+    } else if (role === 'consultant') {
+        chatrooms = await Chatroom.find({ consultant: name })
+    }
 
     res.status(200).json({
         message: `getChatrooms`,

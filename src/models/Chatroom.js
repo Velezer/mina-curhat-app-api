@@ -9,16 +9,19 @@ const Chatroom = mongoose.model('Chatroom', new Schema(
             required: [true, 'name is required'],
             unique: [true, 'name is aready exist'],
         },
-        // consultant: {
-        //     type: Schema.Types.ObjectId,
-        //     required: [true, 'consultant required'],
-        //     ref: 'Consultant'
-
-        // },
-        // anonym: {
-        //     type: String,
-        //     required: [true, 'anonym required']
-        // },
+        consultant: {
+            type: String,
+            required: [true, 'consultant required'],
+            // ref: 'Consultant'
+        },
+        anonym: {
+            type: String,
+            required: [true, 'anonym required']
+        },
+        token_chatroom: {
+            type: String,
+            required: [true, 'token_chatroom required']
+        },
 
     },
 ))

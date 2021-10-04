@@ -25,5 +25,6 @@ exports.chatroom = [
     body(`name`, `name is empty`).notEmpty(),
     body(`consultant`, `consultant is empty`).notEmpty(),
     body(`anonym`, `anonym is empty`).notEmpty(),
+    body(`token_chatroom`, `token_chatroom is empty`).notEmpty(),
     validate
 ]
