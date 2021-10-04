@@ -18,6 +18,19 @@ describe('handler /', () => {
             .expect(200)
     })
 })
+describe('handler anonym --- /api/anonym', () => {
+    const anonymData = { name: 'name' }
+    it('POST /login --> 200 server up', async () => {
+        jwt.sign.mockResolvedValue('token')
+        await request(app).post('/api/anonym/login')
+            .send(anonymData)
+            .expect('Content-Type', /json/)
+            .expect(200, {
+                message: `your anonym token can only be used within one week`,
+                token: 'token'
+            })
+    })
+})
 describe('handler consultants --- /api/consultants', () => {
     const consultantData = {
         name: 'name',
