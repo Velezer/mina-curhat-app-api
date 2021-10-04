@@ -35,5 +35,8 @@
     "path-is-absolute": "^2.0.0",
     "socket.io": "^4.2.0",
     "supertest": "^6.1.6"
+  },
+  "devDependencies": {
+    "socket.io-client": "^4.2.0"
   }
 }

@@ -25,10 +25,10 @@ exports.getChatrooms = async (req, res) => {
     const { Chatroom } = req.db
 
     let chatrooms = null
-    
+
     if (role === 'anonym') {
         chatrooms = await Chatroom.find({ anonym: name })
-    } else if (role === 'consultant') {
+    } else if (role === 'consultant' || role === 'ustadz') {
         chatrooms = await Chatroom.find({ consultant: name })
     }
 
@@ -39,7 +39,7 @@ exports.getChatrooms = async (req, res) => {
 }
 
 exports.getChatroomsById = async (req, res) => {
-    const { _id } = req.body
+    const { _id } = req.params
 
     const { Chatroom } = req.db
     const chatrooms = await Chatroom.findOne({ _id })

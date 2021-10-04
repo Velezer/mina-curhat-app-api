@@ -1,12 +1,12 @@
-const db = require("./db")
-jest.mock("./db")
+const db = require("../db")
+jest.mock("../db")
 const bcrypt = require("bcrypt")
 jest.mock("bcrypt")
 const jwt = require("jwt-then")
 jest.mock("jwt-then")
 
 const request = require("supertest")
-const createApp = require("./app")
+const createApp = require("../app")
 
 const app = createApp(db, bcrypt, jwt)
 
@@ -86,6 +86,39 @@ describe('handler chatrooms --- /api/chatrooms', () => {
             .send(chatroomData)
             .expect('Content-Type', /json/)
             .expect(500, { message: 'save error' })
+    })
+    it('GET / --> 200 getChatrooms anonym', async () => {
+        jwt.verify.mockResolvedValue(payloadAnonym)
+        db.Chatroom.find.mockResolvedValue([])
+        await request(app).get('/api/chatrooms')
+            .set('Authorization', `Bearer ${jwt_token}`)
+            .expect('Content-Type', /json/)
+            .expect(200, {
+                message: `getChatrooms`,
+                data: [] // based on mock value, i use [] for simplicity
+            })
+    })
+    it('GET / --> 200 getChatrooms consultant', async () => {
+        jwt.verify.mockResolvedValue(payloadConsultant)
+        db.Chatroom.find.mockResolvedValue([])
+        await request(app).get('/api/chatrooms')
+            .set('Authorization', `Bearer ${jwt_token}`)
+            .expect('Content-Type', /json/)
+            .expect(200, {
+                message: `getChatrooms`,
+                data: [] // based on mock value, i use [] for simplicity
+            })
+    })
+    it('GET / --> 200 getChatroomsById', async () => {
+        jwt.verify.mockResolvedValue(payloadAnonym)
+        db.Chatroom.findOne.mockResolvedValue([])
+        await request(app).get('/api/chatrooms/92831923')
+            .set('Authorization', `Bearer ${jwt_token}`)
+            .expect('Content-Type', /json/)
+            .expect(200, {
+                message: `getChatroomsById`,
+                data: []
+            })
     })
 })
 describe('handler consultants --- /api/consultants', () => {

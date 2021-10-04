@@ -18,14 +18,13 @@ module.exports = (db, bcrypt, jwt) => {
         socket.db = db
         socket.bcrypt = bcrypt
         socket.jwt = jwt
+        next()
     })
 
     const auth = require("./middleware/auth-io")
     io.use(auth) // assign value of payload to socket.payload on success
 
     io.on("connection", socket => {
-        console.log(socket.payload)
-        console.log(`connected as ${socket.payload.role}`)
 
         socket.on("disconnect", () => {
             // socket.rooms.size === 0
