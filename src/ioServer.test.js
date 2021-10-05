@@ -57,28 +57,25 @@ describe('ioApp auth-io & rooms', () => {
         })
     })
 
-    it('join room', (done) => {
+    it('join room & leave room', (done) => {
         clientSocket.on('joinedRoom', (arg) => {
             expect(arg).toBe(chatroomId)
-            done()
         })
         clientSocket.emit('joinRoom', { chatroomId })
-    })
 
-
-    it('leave room', (done) => {
         clientSocket.on('leftRoom', (arg) => {
             expect(arg).toBe(chatroomId)
             done()
         })
         clientSocket.emit('leaveRoom', { chatroomId })
     })
+
 })
 
 describe('message socket', () => {
     let clientAnonym, clientConsultant
 
-    beforeEach((done) => {
+    beforeAll((done) => {
         jwt.verify.mockResolvedValueOnce(payloadAnonym)
         clientAnonym = new Client(`http://localhost:${port}`, {
             auth: {
@@ -90,20 +87,23 @@ describe('message socket', () => {
             clientAnonym.emit('joinRoom', { chatroomId })
         })
 
-        jwt.verify.mockResolvedValueOnce(payloadConsultant)
-        clientConsultant = new Client(`http://localhost:${port}`, {
-            auth: {
-                token: 'token-consultant'
-            }
-        })
-        clientConsultant.on(`connected`, arg => {
-            expect(arg).toBe(`connected as ${payloadConsultant.role}`)
-            clientConsultant.emit('joinRoom', { chatroomId })
-        })
-        done()
+        setTimeout(() => {
+            jwt.verify.mockResolvedValueOnce(payloadConsultant)
+            clientConsultant = new Client(`http://localhost:${port}`, {
+                auth: {
+                    token: 'token-consultant'
+                }
+            })
+            clientConsultant.on(`connected`, arg => {
+                expect(arg).toBe(`connected as ${payloadConsultant.role}`)
+                clientConsultant.emit('joinRoom', { chatroomId })
+                done()
+            })
+        }, 1000);
+
     })
 
-    afterEach(() => {
+    afterAll(() => {
         clientAnonym.close()
         clientConsultant.close()
     })
