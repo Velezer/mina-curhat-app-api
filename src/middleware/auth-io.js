@@ -8,7 +8,7 @@ module.exports = async (socket, next) => {
     await jwt.verify(token, process.env.JWT_KEY)
         .then((payload) => {
             socket.payload = payload
-            socket.emit(`connected`, `connected as ${payload.role}`)
+            socket.emit(`authenticated`, `authenticated as ${payload.role}`)
             next()
         })
         .catch(err => {

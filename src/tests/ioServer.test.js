@@ -1,5 +1,5 @@
-const db = require("./db")
-jest.mock("./db")
+const db = require("../db")
+jest.mock("../db")
 const bcrypt = require("bcrypt")
 jest.mock("bcrypt")
 const jwt = require("jwt-then")
@@ -7,12 +7,11 @@ jest.mock("jwt-then")
 
 
 const Client = require("socket.io-client")
-const createServer = require("./ioServer")
+const createServer = require("../ioServer")
 
 const server = createServer(db, bcrypt, jwt)
 let port = 5555
 server.listen(port)
-
 
 const payloadAnonym = {
     name: 'anonym',
@@ -51,8 +50,8 @@ describe('ioApp auth-io & rooms', () => {
     })
     it('auth success', (done) => {
         jwt.verify.mockResolvedValue(payloadAnonym)
-        clientSocket.on('connected', (arg) => {
-            expect(arg).toBe(`connected as ${payloadAnonym.role}`)
+        clientSocket.on('authenticated', (arg) => {
+            expect(arg).toBe(`authenticated as ${payloadAnonym.role}`)
             done()
         })
     })
@@ -82,8 +81,8 @@ describe('message socket', () => {
                 token: 'token-anonym'
             }
         })
-        clientAnonym.on(`connected`, arg => {
-            expect(arg).toBe(`connected as ${payloadAnonym.role}`)
+        clientAnonym.on(`authenticated`, arg => {
+            expect(arg).toBe(`authenticated as ${payloadAnonym.role}`)
             clientAnonym.emit('joinRoom', { chatroomId })
         })
 
@@ -94,12 +93,12 @@ describe('message socket', () => {
                     token: 'token-consultant'
                 }
             })
-            clientConsultant.on(`connected`, arg => {
-                expect(arg).toBe(`connected as ${payloadConsultant.role}`)
+            clientConsultant.on(`authenticated`, arg => {
+                expect(arg).toBe(`authenticated as ${payloadConsultant.role}`)
                 clientConsultant.emit('joinRoom', { chatroomId })
                 done()
             })
-        }, 1000);
+        }, 100);
 
     })
 
