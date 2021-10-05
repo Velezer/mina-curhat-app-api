@@ -1,0 +1,4 @@
+# used to deploy on heroku 
+build:
+  docker:
+    web: Dockerfile
