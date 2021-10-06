@@ -14,4 +14,5 @@ if (process.env.NODE == 'production') {
 const Chatroom = require("./models/Chatroom")
 const Consultant = require("./models/Consultant")
 const Message = require("./models/Message")
-module.exports = { Chatroom, Consultant, Message }
+const Anonym = require("./models/Anonym")
+module.exports = { Chatroom, Consultant, Message, Anonym }

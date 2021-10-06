@@ -2,22 +2,17 @@ const mongoose = require('mongoose')
 
 const Schema = mongoose.Schema
 
-const Consultant = mongoose.model('Consultant', new Schema(
+const Anonym = mongoose.model('Anonym', new Schema(
     {
         name: {
             type: String,
             required: [true, 'name is required'],
-            unique: [true, 'name is aready exist'],
-        },
-        password: {
-            type: String,
-            select: false,
-            required: [true, 'password is required']
+            unique: [true, 'name must be unique'],
         },
         role: {
             type: String,
-            enum: ['consultant', 'ustadz'],
-            default: 'consultant',
+            enum: ['anonym'],
+            default: 'anonym',
             required: [true, 'role is required'],
         },
         gender: {
@@ -30,4 +25,4 @@ const Consultant = mongoose.model('Consultant', new Schema(
 ))
 
 
-module.exports = Consultant
+module.exports = Anonym

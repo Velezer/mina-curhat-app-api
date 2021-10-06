@@ -9,13 +9,15 @@ const Message = mongoose.model('Message', new Schema(
             required: [true, 'chatroom is required'],
             ref: 'Chatroom'
         },
+        sender_model: {
+            type: String,
+            enum: ['Consultant', 'Anonym'],
+            required: [true, 'sender_model required'],
+        },
         sender: {
             type: String,
             required: [true, 'sender required'],
-        },
-        role: {
-            type: String,
-            required: [true, 'role required'],
+            refPath: 'sender_model'
         },
         message: {
             type: String,

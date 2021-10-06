@@ -6,13 +6,13 @@ exports.createChatroom = async (req, res, next) => {
         return next(err)
     }
 
-    const { name, consultant, token_chatroom } = req.body
+    const { consultant, chatroom_token } = req.body
     const { Chatroom } = req.db
-    const chatroom = new Chatroom({ name, consultant, token_chatroom, anonym: req.payload.name })
+    const chatroom = new Chatroom({ consultant, chatroom_token, anonym: req.payload.name })
     await chatroom.save()
         .then(() => {
             res.status(201).json({
-                message: `chatroom ${name} created`,
+                message: `chatroom ${chatroom_token} created`,
                 data: chatroom
             })
         })

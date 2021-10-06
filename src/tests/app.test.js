@@ -19,7 +19,7 @@ describe('handler /', () => {
     })
 })
 describe('handler anonym --- /api/anonym', () => {
-    const anonymData = { name: 'name' }
+    const anonymData = { name: 'name', gender: 'male' }
     it('POST /login --> 200 server up', async () => {
         jwt.sign.mockResolvedValue('token')
         await request(app).post('/api/anonym/login')
@@ -29,6 +29,7 @@ describe('handler anonym --- /api/anonym', () => {
                 message: `your anonym token can only be used within one week`,
                 token: 'token'
             })
+        expect(db.Anonym.prototype.save).toHaveBeenCalledTimes(1)
     })
 })
 describe('handler chatrooms --- /api/chatrooms', () => {
@@ -124,7 +125,9 @@ describe('handler chatrooms --- /api/chatrooms', () => {
 describe('handler consultants --- /api/consultants', () => {
     const consultantData = {
         name: 'name',
-        password: 'password'
+        password: 'password',
+        gender: 'male',
+        role: 'consultant'
     }
     it('GET / --> 200 get all consultants', async () => {
         db.Consultant.find.mockResolvedValue([])
