@@ -38,14 +38,14 @@ module.exports = (db, bcrypt, jwt) => {
         socket.on("sendMessage", async ({ chatroomId, message }) => {
             const newMessage = new socket.db.Message({
                 chatroom: chatroomId,
-                sender: socket.payload.name,
-                role: socket.payload.role,
+                sender: socket.payload._id,
+                sender_model: socket.payload.model,
                 message,
             })
 
             socket.to(chatroomId).emit("newMessage", {
-                sender: socket.payload.name,
-                role: socket.payload.role,
+                sender: socket.payload._id,
+                sender_role: socket.payload.role,
                 message,
             })
 

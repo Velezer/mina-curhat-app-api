@@ -8,7 +8,7 @@ exports.createChatroom = async (req, res, next) => {
 
     const { consultant, chatroom_token } = req.body
     const { Chatroom } = req.db
-    const chatroom = new Chatroom({ consultant, chatroom_token, anonym: req.payload.name })
+    const chatroom = new Chatroom({ consultant, chatroom_token, anonym: req.payload._id })
     await chatroom.save()
         .then(() => {
             res.status(201).json({
@@ -20,16 +20,16 @@ exports.createChatroom = async (req, res, next) => {
 }
 
 exports.getChatrooms = async (req, res) => {
-    const { name, role } = req.payload
+    const { _id, role } = req.payload
 
     const { Chatroom } = req.db
 
     let chatrooms = null
 
     if (role === 'anonym') {
-        chatrooms = await Chatroom.find({ anonym: name })
+        chatrooms = await Chatroom.find({ anonym: _id })
     } else if (role === 'consultant' || role === 'ustadz') {
-        chatrooms = await Chatroom.find({ consultant: name })
+        chatrooms = await Chatroom.find({ consultant: _id })
     }
 
     res.status(200).json({

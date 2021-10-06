@@ -22,6 +22,7 @@ describe('handler anonym --- /api/anonym', () => {
     const anonymData = { name: 'name', gender: 'male' }
     it('POST /login --> 200 server up', async () => {
         jwt.sign.mockResolvedValue('token')
+        db.Anonym.prototype.save.mockResolvedValue({ _id: '_id', ...anonymData })
         await request(app).post('/api/anonym/login')
             .send(anonymData)
             .expect('Content-Type', /json/)

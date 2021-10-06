@@ -14,12 +14,16 @@ let port = 5555
 server.listen(port)
 
 const payloadAnonym = {
+    _id: '_idanonym',
     name: 'anonym',
+    model: 'Anonym',
     role: 'anonym'
 }
 const payloadConsultant = {
+    _id: '_idconsultant',
     name: 'consultant',
-    role: 'consultant'
+    model: 'Consultant',
+    role: 'consultant',
 }
 const chatroomId = 'chatroomId'
 
@@ -111,8 +115,8 @@ describe('message socket', () => {
     it('consultant send message', (done) => {
         db.Message.prototype.save.mockResolvedValue()
         clientAnonym.on('newMessage', (arg) => {
-            expect(arg.sender).toBe(payloadConsultant.name)
-            expect(arg.role).toBe(payloadConsultant.role)
+            expect(arg.sender).toBe(payloadConsultant._id)
+            expect(arg.sender_role).toBe(payloadConsultant.role)
             expect(arg.message).toBe('iamconsultant')
             done()
         })
@@ -122,8 +126,8 @@ describe('message socket', () => {
     it('anonym send message', (done) => {
         db.Message.prototype.save.mockResolvedValue()
         clientConsultant.on('newMessage', (arg) => {
-            expect(arg.sender).toBe(payloadAnonym.name)
-            expect(arg.role).toBe(payloadAnonym.role)
+            expect(arg.sender).toBe(payloadAnonym._id)
+            expect(arg.sender_role).toBe(payloadAnonym.role)
             expect(arg.message).toBe('iamanonym')
             done()
         })
