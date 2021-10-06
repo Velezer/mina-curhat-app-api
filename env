@@ -1,0 +1,7 @@
+DB_URI=mongodb://localhost:27017/mina
+DB_URI_TEST=mongodb://localhost:27017/mina_test
+
+JWT_KEY=jwt_key
+
+# pass Number type
+SALT_OR_ROUNDS=10
