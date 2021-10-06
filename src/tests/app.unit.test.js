@@ -39,9 +39,9 @@ describe('handler chatrooms --- /api/chatrooms', () => {
     const payloadConsultant = { name: 'consultant', role: 'consultant' }
     const chatroomData = {
         name: 'chatroom_name',
-        consultant: 'consultant',
+        consultant: 'consultant_id',
         anonym: 'anonym',
-        token_chatroom: 'token_chatroom'
+        chatroom_token: 'chatroom_token'
     }
     it('POST / --> 401 no auth header', async () => {
         await request(app).post('/api/chatrooms')
@@ -163,7 +163,7 @@ describe('handler consultants --- /api/consultants', () => {
             .expect('Content-Type', /json/)
             .expect(200, {
                 message: `User ${consultantData.name} logged in`,
-                token: 'token'
+                data: { token: 'token' }
             })
     })
     it('POST /login --> 400 consultant password wrong', async () => {

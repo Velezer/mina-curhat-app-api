@@ -16,7 +16,9 @@ exports.createChatroom = async (req, res, next) => {
                 data: chatroom
             })
         })
-        .catch(err => next(err))
+        .catch(err => {
+            next(err)
+        })
 }
 
 exports.getChatrooms = async (req, res) => {

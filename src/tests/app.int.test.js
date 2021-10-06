@@ -20,100 +20,33 @@ afterAll((done) => {
         .then(() => done())
         .catch((err) => done(err))
 })
+
+let jwt_token_anonym, jwt_token_consultant
+
 describe('handler anonym --- /api/anonym', () => {
     const anonymData = { name: 'naame', gender: 'male' }
 
+    beforeEach(async () => {
+        await db.Anonym.deleteMany({})
+    })
     afterEach(async () => {
         await db.Anonym.deleteMany({})
     })
 
     it('POST /login --> 200 anonym login to get jwt token', async () => {
-        await request(app).post('/api/anonym/login')
+        const result = await request(app).post('/api/anonym/login')
             .send(anonymData)
             .expect('Content-Type', /json/)
             .expect(200)
+        jwt_token_anonym = JSON.parse(result.res.text).data.token
+
         await request(app).post('/api/anonym/login')
             .send(anonymData)
             .expect('Content-Type', /json/)
             .expect(409, { message: 'anonym name has already taken' })
     })
 })
-// describe('handler chatrooms --- /api/chatrooms', () => {
-//     const jwt_token = 'token'
-//     const payloadAnonym = { name: 'anonym', role: 'anonym' }
-//     const payloadConsultant = { name: 'consultant', role: 'consultant' }
-//     const chatroomData = {
-//         name: 'chatroom_name',
-//         consultant: 'consultant',
-//         anonym: 'anonym',
-//         token_chatroom: 'token_chatroom'
-//     }
-//     it('POST / --> 401 no auth header', async () => {
-//         await request(app).post('/api/chatrooms')
-//             .expect('Content-Type', /json/)
-//             .expect(401, { message: `no auth header` })
-//     })
-//     it('POST / --> 401 invalid jwt', async () => {
-//         await request(app).post('/api/chatrooms')
-//             .set('Authorization', `Bearer ${jwt_token}`)
-//             .expect('Content-Type', /json/)
-//             .expect(401)
-//     })
-//     it('POST / --> 400 no input data but valid jwt', async () => {
-//         await request(app).post('/api/chatrooms')
-//             .set('Authorization', `Bearer ${jwt_token}`)
-//             .expect('Content-Type', /json/)
-//             .expect(400)
-//     })
-//     it('POST / --> 400 role is not anonym', async () => {
-//         await request(app).post('/api/chatrooms')
-//             .set('Authorization', `Bearer ${jwt_token}`)
-//             .send(chatroomData)
-//             .expect('Content-Type', /json/)
-//             .expect(400, { message: 'only anonym can create chatroom' })
-//     })
-//     it('POST / --> 201 chatroom created', async () => {
-//         await request(app).post('/api/chatrooms')
-//             .set('Authorization', `Bearer ${jwt_token}`)
-//             .send(chatroomData)
-//             .expect('Content-Type', /json/)
-//             .expect(201)
-//     })
-//     it('POST / --> 201 chatroom created', async () => {
-//         await request(app).post('/api/chatrooms')
-//             .set('Authorization', `Bearer ${jwt_token}`)
-//             .send(chatroomData)
-//             .expect('Content-Type', /json/)
-//             .expect(500, { message: 'save error' })
-//     })
-//     it('GET / --> 200 getChatrooms anonym', async () => {
-//         await request(app).get('/api/chatrooms')
-//             .set('Authorization', `Bearer ${jwt_token}`)
-//             .expect('Content-Type', /json/)
-//             .expect(200, {
-//                 message: `getChatrooms`,
-//                 data: [] // based on mock value, i use [] for simplicity
-//             })
-//     })
-//     it('GET / --> 200 getChatrooms consultant', async () => {
-//         await request(app).get('/api/chatrooms')
-//             .set('Authorization', `Bearer ${jwt_token}`)
-//             .expect('Content-Type', /json/)
-//             .expect(200, {
-//                 message: `getChatrooms`,
-//                 data: [] // based on mock value, i use [] for simplicity
-//             })
-//     })
-//     it('GET / --> 200 getChatroomsById', async () => {
-//         await request(app).get('/api/chatrooms/92831923')
-//             .set('Authorization', `Bearer ${jwt_token}`)
-//             .expect('Content-Type', /json/)
-//             .expect(200, {
-//                 message: `getChatroomsById`,
-//                 data: []
-//             })
-//     })
-// })
+
 
 describe('handler consultants --- /api/consultants', () => {
     const consultantData = {
@@ -150,10 +83,11 @@ describe('handler consultants --- /api/consultants', () => {
             .expect(409)
     })
     it('POST /login --> 200 consultant login', async () => {
-        await request(app).post('/api/consultants/login')
+        const result = await request(app).post('/api/consultants/login')
             .send(consultantData)
             .expect('Content-Type', /json/)
             .expect(200)
+        jwt_token_consultant = JSON.parse(result.res.text).data.token
     })
     it('POST /login --> 400 consultant password wrong', async () => {
         consultantData.password = 'wrongPassword'
@@ -174,4 +108,75 @@ describe('handler consultants --- /api/consultants', () => {
             .expect('Content-Type', /json/)
             .expect(200)
     })
+})
+
+
+describe('handler chatrooms --- /api/chatrooms', () => {
+    const payloadAnonym = { name: 'anonym', role: 'anonym' }
+    const payloadConsultant = { name: 'consultant', role: 'consultant' }
+    const chatroomData = {
+        name: 'chatroom_name',
+        consultant: new db.Consultant(),
+        anonym: 'anonym',
+        chatroom_token: 'chatroom_token'
+    }
+
+    afterAll(async () => {
+        await db.Chatroom.deleteMany({})
+    })
+
+    it('POST / --> 401 no auth header', async () => {
+        await request(app).post('/api/chatrooms')
+            .expect('Content-Type', /json/)
+            .expect(401, { message: `no auth header` })
+    })
+    it('POST / --> 401 invalid jwt', async () => {
+        await request(app).post('/api/chatrooms')
+            .set('Authorization', `Bearer mdkasmdklasmdp`)
+            .expect('Content-Type', /json/)
+            .expect(401)
+    })
+    it('POST / --> 400 no input data but valid jwt', async () => {
+        await request(app).post('/api/chatrooms')
+            .set('Authorization', `Bearer ${jwt_token_anonym}`)
+            .expect('Content-Type', /json/)
+            .expect(400)
+    })
+    it('POST / --> 400 role is not anonym', async () => {
+        await request(app).post('/api/chatrooms')
+            .set('Authorization', `Bearer ${jwt_token_consultant}`)
+            .send(chatroomData)
+            .expect('Content-Type', /json/)
+            .expect(400, { message: 'only anonym can create chatroom' })
+    })
+    it('POST / --> 201 chatroom created', async () => {
+        const result = await request(app).post('/api/chatrooms')
+            .set('Authorization', `Bearer ${jwt_token_anonym}`)
+            .send(chatroomData)
+            .expect('Content-Type', /json/)
+            .expect(201)
+
+        const chatroom = JSON.parse(result.res.text).data
+
+        await request(app).get('/api/chatrooms/' + chatroom._id)
+            .set('Authorization', `Bearer ${jwt_token_anonym}`)
+            .expect('Content-Type', /json/)
+            .expect(200, {
+                message: `getChatroomsById`,
+                data: chatroom
+            })
+    })
+    it('GET / --> 200 getChatrooms anonym', async () => {
+        await request(app).get('/api/chatrooms')
+            .set('Authorization', `Bearer ${jwt_token_anonym}`)
+            .expect('Content-Type', /json/)
+            .expect(200)
+    })
+    it('GET / --> 200 getChatrooms consultant', async () => {
+        await request(app).get('/api/chatrooms')
+            .set('Authorization', `Bearer ${jwt_token_consultant}`)
+            .expect('Content-Type', /json/)
+            .expect(200)
+    })
+
 })
