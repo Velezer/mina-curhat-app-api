@@ -2,7 +2,7 @@ require("dotenv").config()
 
 exports.register = async (req, res, next) => {
 
-    const { name, password } = req.body
+    const { name, password, gender, role } = req.body
 
     const { Consultant } = req.db
     const found = await Consultant.findOne({ name })
@@ -14,7 +14,7 @@ exports.register = async (req, res, next) => {
     const bcrypt = req.bcrypt
     const hashed = await bcrypt.hash(password, Number(process.env.SALT_OR_ROUNDS))
 
-    let newConsultant = new Consultant({ name, password: hashed })
+    let newConsultant = new Consultant({ name, password: hashed, gender, role })
 
     newConsultant = await newConsultant.save()
     res.status(201).json({
@@ -26,15 +26,15 @@ exports.login = async (req, res, next) => {
     const { name, password, gender, role } = req.body
 
     const { Consultant } = req.db
-    const consultant = await Consultant.findOne({ name, gender, role })
-    if (consultant === null) {
+    const found = await Consultant.findOne({ name, gender, role }).select('+password')
+    if (found === null) {
         const err = new Error(`user ${name} not found`)
         err.code = 404
         return next(err)
     }
 
     const bcrypt = req.bcrypt
-    const match = await bcrypt.compare(password, consultant.password)
+    const match = await bcrypt.compare(password, found.password)
 
     if (!match) {
         const err = new Error(`password doesn't match`)
@@ -43,7 +43,7 @@ exports.login = async (req, res, next) => {
     }
 
     const jwt = req.jwt
-    const token = await jwt.sign({ _id: consultant._id, name, gender, role, model: 'Consultant' }, process.env.JWT_KEY)
+    const token = await jwt.sign({ _id: found._id, name, gender, role, model: 'Consultant' }, process.env.JWT_KEY)
 
     res.status(200).json({
         message: `User ${name} logged in`,

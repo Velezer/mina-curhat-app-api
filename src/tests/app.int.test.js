@@ -115,52 +115,63 @@ describe('handler anonym --- /api/anonym', () => {
 //     })
 // })
 
-// describe('handler consultants --- /api/consultants', () => {
-//     const consultantData = {
-//         name: 'name',
-//         password: 'password',
-//         gender: 'male',
-//         role: 'consultant'
-//     }
-//     it('GET / --> 200 get all consultants', async () => {
-//         await request(app).get('/api/consultants')
-//             .expect('Content-Type', /json/)
-//             .expect(200, {
-//                 message: `get all consultants`,
-//                 data: []
-//             })
-//     })
-//     it('POST /register --> 201 create consultant', async () => {
-//         await request(app).post('/api/consultants/register')
-//             .send(consultantData)
-//             .expect('Content-Type', /json/)
-//             .expect(201)
-//     })
-//     it('POST /register --> 409 consultant already exist', async () => {
-//         await request(app).post('/api/consultants/register')
-//             .send(consultantData)
-//             .expect('Content-Type', /json/)
-//             .expect(409)
-//     })
-//     it('POST /login --> 200 consultant login', async () => {
-//         await request(app).post('/api/consultants/login')
-//             .send(consultantData)
-//             .expect('Content-Type', /json/)
-//             .expect(200, {
-//                 message: `User ${consultantData.name} logged in`,
-//                 token: 'token'
-//             })
-//     })
-//     it('POST /login --> 400 consultant password wrong', async () => {
-//         await request(app).post('/api/consultants/login')
-//             .send(consultantData)
-//             .expect('Content-Type', /json/)
-//             .expect(400)
-//     })
-//     it('POST /login --> 404 consultant not found', async () => {
-//         await request(app).post('/api/consultants/login')
-//             .send(consultantData)
-//             .expect('Content-Type', /json/)
-//             .expect(404)
-//     })
-// })
+describe('handler consultants --- /api/consultants', () => {
+    const consultantData = {
+        name: 'name',
+        password: 'password',
+        gender: 'male',
+        role: 'consultant'
+    }
+    beforeAll(async () => {
+        await db.Consultant.deleteMany({})
+    })
+    afterAll(async () => {
+        await db.Consultant.deleteMany({})
+    })
+
+    it('GET / --> 200 get all consultants', async () => {
+        await request(app).get('/api/consultants')
+            .expect('Content-Type', /json/)
+            .expect(200, {
+                message: `get all consultants`,
+                data: []
+            })
+    })
+    it('POST /register --> 201 create consultant', async () => {
+        await request(app).post('/api/consultants/register')
+            .send(consultantData)
+            .expect('Content-Type', /json/)
+            .expect(201)
+    })
+    it('POST /register --> 409 consultant already exist', async () => {
+        await request(app).post('/api/consultants/register')
+            .send(consultantData)
+            .expect('Content-Type', /json/)
+            .expect(409)
+    })
+    it('POST /login --> 200 consultant login', async () => {
+        await request(app).post('/api/consultants/login')
+            .send(consultantData)
+            .expect('Content-Type', /json/)
+            .expect(200)
+    })
+    it('POST /login --> 400 consultant password wrong', async () => {
+        consultantData.password = 'wrongPassword'
+        await request(app).post('/api/consultants/login')
+            .send(consultantData)
+            .expect('Content-Type', /json/)
+            .expect(400)
+    })
+    it('POST /login --> 404 consultant not found', async () => {
+        consultantData.name = 'notFound'
+        await request(app).post('/api/consultants/login')
+            .send(consultantData)
+            .expect('Content-Type', /json/)
+            .expect(404)
+    })
+    it('GET / --> 200 get all consultants', async () => {
+        await request(app).get('/api/consultants')
+            .expect('Content-Type', /json/)
+            .expect(200)
+    })
+})

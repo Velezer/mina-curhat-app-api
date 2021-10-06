@@ -155,7 +155,7 @@ describe('handler consultants --- /api/consultants', () => {
             .expect(409)
     })
     it('POST /login --> 200 consultant login', async () => {
-        db.Consultant.findOne.mockResolvedValue(consultantData)
+        db.Consultant.findOne.mockImplementationOnce(() => ({ select: jest.fn().mockResolvedValue(consultantData) }))
         bcrypt.compare.mockResolvedValue(true)
         jwt.sign.mockResolvedValue('token')
         await request(app).post('/api/consultants/login')
@@ -167,7 +167,7 @@ describe('handler consultants --- /api/consultants', () => {
             })
     })
     it('POST /login --> 400 consultant password wrong', async () => {
-        db.Consultant.findOne.mockResolvedValue(consultantData)
+        db.Consultant.findOne.mockImplementationOnce(() => ({ select: jest.fn().mockResolvedValue(consultantData) }))
         bcrypt.compare.mockResolvedValue(false)
         await request(app).post('/api/consultants/login')
             .send(consultantData)
@@ -175,7 +175,7 @@ describe('handler consultants --- /api/consultants', () => {
             .expect(400)
     })
     it('POST /login --> 404 consultant not found', async () => {
-        db.Consultant.findOne.mockResolvedValue(null)
+        db.Consultant.findOne.mockImplementationOnce(() => ({ select: jest.fn().mockResolvedValue(null) }))
         await request(app).post('/api/consultants/login')
             .send(consultantData)
             .expect('Content-Type', /json/)
