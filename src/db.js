@@ -10,12 +10,9 @@ if (process.env.ENVIRONTMENT === 'test') {
 
 function dbConnect() {
     mongoose.connect(DB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-        // .then(async () => {
-        //     console.log(`connected db`)
-        // })
         .catch(err => console.error(err))
     return mongoose.connection
-
+    
 }
 
 function dbClose() {

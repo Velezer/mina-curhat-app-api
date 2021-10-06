@@ -38,7 +38,7 @@ module.exports = (db, bcrypt, jwt) => {
         socket.on("sendMessage", async ({ chatroomId, message }) => {
             const newMessage = new socket.db.Message({
                 chatroom: chatroomId,
-                sender: socket.payload._id,
+                sender: socket.payload._id, // sockeet.payload is from auth middleware
                 sender_model: socket.payload.model,
                 message,
             })
