@@ -4,7 +4,8 @@
   "description": "chat anonymously to a consultant api",
   "main": "app.js",
   "scripts": {
-    "test": "jest unit --coverage",
+    "test": "jest --coverage",
+    "test:unit": "jest unit --coverage",
     "test:integration": "jest int --coverage",
     "start": "nodemon ./src/server"
   },

@@ -28,7 +28,7 @@ describe('handler anonym --- /api/anonym', () => {
             .expect('Content-Type', /json/)
             .expect(200, {
                 message: `your anonym token can only be used within one week`,
-                token: 'token'
+                data: { token: 'token' }
             })
         expect(db.Anonym.prototype.save).toHaveBeenCalledTimes(1)
     })

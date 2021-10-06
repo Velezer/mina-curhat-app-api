@@ -10,23 +10,32 @@ const app = createApp(db, bcrypt, jwt)
 
 jest.setTimeout(11000)
 
+beforeAll((done) => {
+    db.dbConnect()
+        .once('open', () => done())
+        .on('error', (error) => done(error))
+})
+afterAll((done) => {
+    db.dbClose()
+        .then(() => done())
+        .catch((err) => done(err))
+})
 describe('handler anonym --- /api/anonym', () => {
-    beforeAll((done) => {
-        db.dbConnect()
-            .once('open', () => done())
-            .on('error', (error) => done(error))
+    const anonymData = { name: 'naame', gender: 'male' }
+
+    afterEach(async () => {
+        await db.Anonym.deleteMany({})
     })
-    afterAll((done) => {
-        db.dbClose()
-            .then(() => done())
-            .catch((err) => done(err))
-    })
-    const anonymData = { name: 'name', gender: 'male' }
-    it('POST /login --> 200 server up', async () => {
+
+    it('POST /login --> 200 anonym login to get jwt token', async () => {
         await request(app).post('/api/anonym/login')
             .send(anonymData)
             .expect('Content-Type', /json/)
             .expect(200)
+        await request(app).post('/api/anonym/login')
+            .send(anonymData)
+            .expect('Content-Type', /json/)
+            .expect(409, { message: 'anonym name has already taken' })
     })
 })
 // describe('handler chatrooms --- /api/chatrooms', () => {
@@ -105,6 +114,7 @@ describe('handler anonym --- /api/anonym', () => {
 //             })
 //     })
 // })
+
 // describe('handler consultants --- /api/consultants', () => {
 //     const consultantData = {
 //         name: 'name',

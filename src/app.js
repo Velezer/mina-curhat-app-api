@@ -30,6 +30,7 @@ module.exports = (db, bcrypt, jwt) => {
   app.use('/api/chatrooms', require("./routes/chatrooms"))
   app.use('/api/anonym', require("./routes/anonym"))
 
+  app.use(errorsMiddleware.mongooseError);
   app.use(errorsMiddleware.expressError);
 
   return app
