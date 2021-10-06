@@ -2,7 +2,7 @@ const Message = require("./models/Message")
 const createApp = require("./app")
 
 module.exports = (db, bcrypt, jwt) => {
-    const app = createApp(db, bcrypt)
+    const app = createApp(db, bcrypt, jwt)
 
     const httpServer = require("http").createServer(app)
     const io = require("socket.io")(httpServer, {
