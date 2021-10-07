@@ -30,9 +30,7 @@ module.exports = (db, bcrypt, jwt) => {
             if (!found) {
                 return socket.emit('joinRoomFailed', 'chatroom not found')
             }
-            if (found.anonym.toString() == socket.payload._id.toString() && found.consultant.toString() == socket.payload._id.toString()) {
-                return socket.emit('joinRoomFailed', 'restricted chatroom')
-            }
+
             socket.join(chatroomId)
             socket.emit('joinedRoom', chatroomId)
         })

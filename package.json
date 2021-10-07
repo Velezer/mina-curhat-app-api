@@ -8,7 +8,7 @@
     "test:unit": "jest unit --coverage",
     "test:integration": "jest int --coverage",
     "tdd": "jest --watch",
-    "tdd:unit": "jest ioServer.unit --watch",
+    "tdd:unit": "jest unit --watch",
     "start": "nodemon ./src/server"
   },
   "repository": {

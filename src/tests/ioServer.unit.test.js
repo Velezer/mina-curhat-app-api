@@ -60,6 +60,7 @@ describe('ioApp auth-io & rooms', () => {
         })
     })
 
+
     it('join room & leave room', (done) => {
         clientSocket.on('joinedRoom', (arg) => {
             expect(arg).toBe(chatroomId)
@@ -73,63 +74,8 @@ describe('ioApp auth-io & rooms', () => {
         clientSocket.emit('leaveRoom', { chatroomId })
     })
 
-    // it('failed to join a room cause wrong anonym _id', done => {
-    //     db.Chatroom.findOne.mockResolvedValue({ anonym: 'wronganonym', consultant: 'wrongconsultant' })
-    //     clientSocket.on('joinRoomFailed', arg => {
-    //         expect(arg).toBe('restricted chatroom')
-    //         clientSocket.emit('leaveRoom', { chatroomId })
-    //         done()
-    //     })
-    //     clientSocket.emit('joinRoom', { chatroomId })
-    // })
-
-    //     // it('failed to join a room cause null', done => {
-//     //     db.Chatroom.findOne.mockResolvedValue(null)
-//     //     clientAnonym.on('joinRoomFailed', arg => {
-//     //         expect(arg).toBe('chatroom not found')
-//     //         clientAnonym.emit('leaveRoom', { chatroomId })
-//     //         done()
-//     //     })
-//     //     clientAnonym.emit('joinRoom', { chatroomId })
-//     // })
-
 })
 
-// describe('room validation', () => {
-//     let clientAnonym
-
-//     beforeAll((done) => {
-//         jwt.verify.mockResolvedValueOnce(payloadAnonym)
-//         clientAnonym = new Client(`http://localhost:${port}`, {
-//             auth: {
-//                 token: 'token-anonym'
-//             }
-//         })
-//         done()
-//     })
-
-//     afterAll(() => {
-//         clientAnonym.close()
-//     })
-
-//     // it('failed to join a room cause null', done => {
-//     //     db.Chatroom.findOne.mockResolvedValue(null)
-//     //     clientAnonym.on('joinRoomFailed', arg => {
-//     //         expect(arg).toBe('chatroom not found')
-//     //         clientAnonym.emit('leaveRoom', { chatroomId })
-//     //         done()
-//     //     })
-//     //     clientAnonym.emit('joinRoom', { chatroomId })
-//     // })
-//     it('failed to join a room cause wrong anonym _id', done => {
-//         db.Chatroom.findOne.mockResolvedValue({ anonym: '90jjj0jygp', consultant: 'djsa0dj0sad' })
-//         clientAnonym.on('joinRoomFailed', arg => {
-//             expect(arg).toBe('restricted chatroom')
-//             done()
-//         })
-//         clientAnonym.emit('joinRoom', { chatroomId })
-//     })
-// })
 
 describe('message socket', () => {
     let clientAnonym, clientConsultant
