@@ -13,7 +13,7 @@ jest.setTimeout(11000)
 beforeAll((done) => {
     db.dbConnect()
         .once('open', () => done())
-        .on('error', (error) => done(error))
+        .on('error', (err) => done(err))
 })
 afterAll((done) => {
     db.dbClose()

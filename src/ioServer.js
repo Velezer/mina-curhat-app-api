@@ -24,8 +24,15 @@ module.exports = (db, bcrypt, jwt) => {
     const auth = require("./middleware/auth-io")
     io.use(auth) // assign value of payload to socket.payload on success
 
-    io.on("connection", socket => {
-        socket.on("joinRoom", ({ chatroomId }) => {
+    io.on("connection", async socket => {
+        socket.on("joinRoom", async ({ chatroomId }) => {
+            const found = await socket.db.Chatroom.findOne({ _id: chatroomId })
+            if (!found) {
+                return socket.emit('joinRoomFailed', 'chatroom not found')
+            }
+            if (found.anonym.toString() == socket.payload._id.toString() && found.consultant.toString() == socket.payload._id.toString()) {
+                return socket.emit('joinRoomFailed', 'restricted chatroom')
+            }
             socket.join(chatroomId)
             socket.emit('joinedRoom', chatroomId)
         })
@@ -36,16 +43,16 @@ module.exports = (db, bcrypt, jwt) => {
         })
 
         socket.on("sendMessage", async ({ chatroomId, message }) => {
+
             const newMessage = new socket.db.Message({
                 chatroom: chatroomId,
-                sender: socket.payload._id, // sockeet.payload is from auth middleware
+                sender: socket.payload._id, // socket.payload is from auth middleware
                 sender_model: socket.payload.model,
                 message,
             })
-
             socket.to(chatroomId).emit("newMessage", {
                 sender: socket.payload._id,
-                sender_role: socket.payload.role,
+                sender_model: socket.payload.model,
                 message,
             })
 
