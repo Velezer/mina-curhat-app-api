@@ -4,7 +4,7 @@ const jwt = require("jwt-then")
 
 const createServer = require("./ioServer")
 
-
+db.dbConnect()
 const server = createServer(db, bcrypt, jwt)
 
 // eslint-disable-next-line no-undef
