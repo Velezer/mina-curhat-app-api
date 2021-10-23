@@ -3,12 +3,56 @@ info:
   title: Mina Curhat App API
   version: 1.0.0
   contact:
+    name: Velezer
     url: https://github.com/Velezer
 servers:
   - url: https://mina-curhat-api.herokuapp.com/
+externalDocs:
+  description: Repository Link
+  url: https://github.com/Velezer/mina-curhat-app-api
 paths:
   /:
     get:
+      summary: check if server is up
+      description: use this endpoint to check if server is up and running
+      tags:
+        - home
       responses:
         200:
           description: OK
+  /api/anonym/login:
+    summary: User login as an anonymous
+    post:
+      tags:
+        - anonym
+      requestBody:
+        required: true
+        description: anonym data
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                gender:
+                  type: string
+                  enum:
+                    - male
+                    - female
+            examples:
+              male: 
+                value:
+                  name: male name
+                  gender: male
+              female: 
+                value:
+                  name: female name
+                  gender: female
+      responses:
+        200:
+          description: OK
+        400:
+          description: Bad Request
+        409:
+          description: Conflict
