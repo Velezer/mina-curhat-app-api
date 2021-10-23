@@ -1,15 +1,19 @@
 openapi: 3.0.2
+
 info: 
   title: Mina Curhat App API
   version: 1.0.0
   contact:
     name: Velezer
     url: https://github.com/Velezer
-servers:
-  - url: https://mina-curhat-api.herokuapp.com/
+
 externalDocs:
   description: Repository Link
   url: https://github.com/Velezer/mina-curhat-app-api
+
+servers:
+  - url: https://mina-curhat-api.herokuapp.com/
+
 paths:
   /:
     get:
@@ -20,6 +24,7 @@ paths:
       responses:
         200:
           description: OK
+
   /api/anonym/login:
     summary: User login as an anonymous
     post:
@@ -51,8 +56,76 @@ paths:
                   gender: female
       responses:
         200:
-          description: OK
-        400:
-          description: Bad Request
+          description: Anonym login success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      token:
+                        type: string
+              example:
+                message: success
+                token: token
         409:
-          description: Conflict
+          description: Conflict, anonym name has taken
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: anonym name has already taken
+        400:
+          description: Validation failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        msg:
+                          type: string
+                        param:
+                          type: string
+                        location:
+                          type: string
+  /api/consultants:
+    get:
+      summary: get all consultants
+      description: get all consultants
+      tags:
+        - consultants
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  data:
+                    type: array
+              example:
+                message: success
+                data: [{
+                    "_id": "6173d2e7365b7f5cefd2017d",
+                    "name": "secretConsultant",
+                    "role": "consultant",
+                    "gender": "female",
+                    "__v": 0
+                  }]
+    # /register:
