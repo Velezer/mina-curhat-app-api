@@ -128,4 +128,56 @@ paths:
                     "gender": "female",
                     "__v": 0
                   }]
-    # /register:
+  /api/consultants/register:
+    post:
+      summary: register as a consultants
+      description: register as a consultants
+      tags:
+        - consultants
+      requestBody:
+        required: true
+        description: consultant data
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                password:
+                  type: string
+                gender:
+                  type: string
+                  enum:
+                    - male
+                    - female
+                role:
+                  type: string
+                  enum:
+                    - consultant
+                    - ustadz
+                
+      responses:
+        201:
+          description: consultant created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: created
+        409:
+          description: consultant already exist
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: user exist
+    

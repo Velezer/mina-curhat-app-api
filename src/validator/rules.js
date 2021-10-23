@@ -16,7 +16,7 @@ exports.consultant = [
     body(`gender`, `gender must be male or female`)
         .notEmpty().bail()
         .isIn(['male', 'female']).bail(),
-    body(`role`, `gender must be consultant or ustadz`)
+    body(`role`, `role must be consultant or ustadz`)
         .notEmpty().bail()
         .isIn(['consultant', 'ustadz']).bail(),
     validate
