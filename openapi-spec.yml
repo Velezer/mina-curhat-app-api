@@ -14,6 +14,80 @@ externalDocs:
 servers:
   - url: https://mina-curhat-api.herokuapp.com/
 
+
+components:
+  schemas:
+    anonymInput:
+      type: object
+      properties:
+        name:
+          type: string
+        gender:
+          type: string
+          enum:
+            - male
+            - female
+    anonymLoginSuccess:
+      type: object
+      properties:
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            token:
+              type: string
+    getAllConsultants:
+      type: object
+      properties:
+        message:
+          type: string
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              _id:
+                type: string
+              name:
+                type: string
+              role:
+                type: string
+              gender:
+                type: string
+              __v:
+                type: string
+    consultantRegister:
+      type: object
+      properties:
+        name:
+          type: string
+        gender:
+          type: string
+          enum:
+            - male
+            - female
+
+    basicMessage:
+      type: object
+      properties:
+        message:
+          type: string
+
+    validationError:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              msg:
+                type: string
+              param:
+                type: string
+              location:
+                type: string
 paths:
   /:
     get:
@@ -37,15 +111,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                gender:
-                  type: string
-                  enum:
-                    - male
-                    - female
+              $ref: '#/components/schemas/anonymInput'
             examples:
               male: 
                 value:
@@ -61,47 +127,19 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                  data:
-                    type: object
-                    properties:
-                      token:
-                        type: string
-              example:
-                message: success
-                token: token
+                $ref: '#/components/schemas/anonymLoginSuccess'
         409:
           description: Conflict, anonym name has taken
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-              example:
-                message: anonym name has already taken
+                $ref: '#/components/schemas/basicMessage'
         400:
           description: Validation failed
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  errors:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        msg:
-                          type: string
-                        param:
-                          type: string
-                        location:
-                          type: string
+                $ref: '#/components/schemas/validationError'
   
   /api/consultants:
     get:
@@ -115,12 +153,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                  data:
-                    type: array
+                $ref: '#/components/schemas/getAllConsultants'
               example:
                 message: success
                 data: [{
@@ -143,22 +176,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                password:
-                  type: string
-                gender:
-                  type: string
-                  enum:
-                    - male
-                    - female
-                role:
-                  type: string
-                  enum:
-                    - consultant
-                    - ustadz
+              $ref: '#/components/schemas/consultantRegister'
                 
       responses:
         201:
@@ -166,40 +184,18 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-              example:
-                message: created
+                $ref: '#/components/schemas/basicMessage'
         409:
           description: consultant already exist
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-              example:
-                message: user exist
+                $ref: '#/components/schemas/basicMessage'
         400:
           description: Validation failed
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  errors:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        msg:
-                          type: string
-                        param:
-                          type: string
-                        location:
-                          type: string
+                $ref: '#/components/schemas/validationError'
   
     
