@@ -25,9 +25,10 @@ paths:
         200:
           description: OK
 
+
   /api/anonym/login:
-    summary: User login as an anonymous
     post:
+      summary: User login as an anonymous
       tags:
         - anonym
       requestBody:
@@ -101,6 +102,7 @@ paths:
                           type: string
                         location:
                           type: string
+  
   /api/consultants:
     get:
       summary: get all consultants
@@ -128,6 +130,7 @@ paths:
                     "gender": "female",
                     "__v": 0
                   }]
+  
   /api/consultants/register:
     post:
       summary: register as a consultants
@@ -180,4 +183,23 @@ paths:
                     type: string
               example:
                 message: user exist
+        400:
+          description: Validation failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        msg:
+                          type: string
+                        param:
+                          type: string
+                        location:
+                          type: string
+  
     
