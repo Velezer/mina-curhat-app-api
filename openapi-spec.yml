@@ -300,5 +300,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/basicMessage'
+        500:
+          description: server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/basicMessage'
   
     
