@@ -40,7 +40,7 @@ exports.getChatrooms = async (req, res) => {
     })
 }
 
-exports.getChatroomsById = async (req, res) => {
+exports.getChatroomsById = async (req, res, next) => {
     const { _id } = req.params
 
     const { Chatroom } = req.db
