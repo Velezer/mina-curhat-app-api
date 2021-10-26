@@ -4,7 +4,7 @@ exports.mongooseError = (err, req, res, next) => {
 
     if (err.code == 11000) {
         err.code = 409
-        err.message = 'duplicate key error'
+        // err.message = 'duplicate key error'
         return next(err)
     }
 }
