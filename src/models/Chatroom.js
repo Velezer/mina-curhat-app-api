@@ -16,7 +16,8 @@ const Chatroom = mongoose.model('Chatroom', new Schema(
         },
         chatroom_token: {
             type: String,
-            required: [true, 'chatroom_token required']
+            required: [true, 'chatroom_token required'],
+            unique: [true, 'chatroom_token must be unique'],
         },
 
     },
