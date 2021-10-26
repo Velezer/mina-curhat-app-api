@@ -102,6 +102,27 @@ components:
           type: array
           items: 
             type: object
+            properties:
+              consultant:
+                type: string
+              anonym:
+                type: string
+              chatroom_token:
+                type: string
+    getChatroomById:
+      type: object
+      properties:
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            consultant:
+              type: string
+            anonym:
+              type: string
+            chatroom_token:
+              type: string
 
 paths:
   /:
@@ -228,6 +249,39 @@ paths:
                 $ref: '#/components/schemas/getChatrooms'
         401:
           description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/basicMessage'
+  /api/chatrooms/{_id}:
+    get:
+      security:
+        - jwt_token: []
+      
+      summary: get chatrooms by id
+      description: it depends on your role in jwt token
+      parameters:
+        - name: _id
+          in: path
+          required: true
+          schema:
+            type: string
+
+      responses:
+        200:
+          description: get chatroom success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getChatroomById'
+        401:
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/basicMessage'
+        404:
+          description: not found
           content:
             application/json:
               schema:

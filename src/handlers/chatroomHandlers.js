@@ -44,10 +44,14 @@ exports.getChatroomsById = async (req, res) => {
     const { _id } = req.params
 
     const { Chatroom } = req.db
-    const chatrooms = await Chatroom.findOne({ _id })
-
+    const found = await Chatroom.findOne({ _id })
+    if (!found) {
+        const err = new Error(`chatroom not found`)
+        err.code = 404
+        return next(err)
+    }
     res.status(200).json({
         message: `getChatroomsById`,
-        data: chatrooms
+        data: found
     })
 }
