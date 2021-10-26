@@ -66,6 +66,13 @@ components:
       properties:
         name:
           type: string
+        password:
+          type: string
+        role:
+          type: string
+          enum:
+            - consultant
+            - ustadz
         gender:
           type: string
           enum:
@@ -213,6 +220,11 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/consultantRegister'
+            example:
+              name: name
+              password: password
+              role: consultant
+              gender: male
                 
       responses:
         201:
@@ -237,7 +249,8 @@ paths:
     get:
       security:
         - jwt_token: []
-      
+      tags:
+        - chatroom
       summary: get chatrooms
       description: it depends on your role in jwt token
       responses:
@@ -257,7 +270,8 @@ paths:
     get:
       security:
         - jwt_token: []
-      
+      tags:
+        - chatroom
       summary: get chatrooms by id
       description: it depends on your role in jwt token
       parameters:
