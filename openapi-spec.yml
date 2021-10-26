@@ -16,6 +16,10 @@ servers:
 
 
 components:
+  securitySchemes:
+    jwt_token:
+      type: http
+      scheme: 'Bearer'
   schemas:
     anonymInput:
       type: object
@@ -88,6 +92,17 @@ components:
                 type: string
               location:
                 type: string
+
+    getChatrooms:
+      type: object
+      properties:
+        message:
+          type: string
+        data:
+          type: array
+          items: 
+            type: object
+
 paths:
   /:
     get:
@@ -197,5 +212,25 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/validationError'
+  /api/chatrooms:
+    get:
+      security:
+        - jwt_token: []
+      
+      summary: get chatrooms
+      description: it depends on your role in jwt token
+      responses:
+        200:
+          description: get chatroom success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getChatrooms'
+        401:
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/basicMessage'
   
     
