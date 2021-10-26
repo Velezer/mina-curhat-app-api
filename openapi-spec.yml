@@ -130,6 +130,16 @@ components:
               type: string
             chatroom_token:
               type: string
+    createChatroom:
+      type: object
+      properties:
+        consultant:
+          type: string
+        anonym:
+          type: string
+        chatroom_token:
+          type: string
+        
 
 paths:
   /:
@@ -246,6 +256,38 @@ paths:
               schema:
                 $ref: '#/components/schemas/validationError'
   /api/chatrooms:
+    post:
+      security:
+        - jwt_token: []
+      tags:
+        - chatroom
+      summary: create chatroom
+      description: it depends on your role in jwt token
+      requestBody:
+        required: true
+        description: chatroom data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createChatroom'
+            example:
+              consultant: 61788394ff9dbd1ffffad737
+              anonym: 6173d2e7365b7f5cefd2017b
+              chatroom_token: rtoken
+            
+      responses:
+        201:
+          description: created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getChatrooms'
+        401:
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/basicMessage'
     get:
       security:
         - jwt_token: []

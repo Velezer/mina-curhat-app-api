@@ -10,7 +10,7 @@ exports.createChatroom = async (req, res, next) => {
     const { Chatroom } = req.db
     const chatroom = new Chatroom({ consultant, chatroom_token, anonym: req.payload._id })
     await chatroom.save()
-        .then(() => {
+        .then((chatroom) => {
             res.status(201).json({
                 message: `chatroom ${chatroom_token} created`,
                 data: chatroom
