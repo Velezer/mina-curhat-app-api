@@ -135,8 +135,6 @@ components:
       properties:
         consultant:
           type: string
-        anonym:
-          type: string
         chatroom_token:
           type: string
         
@@ -272,7 +270,6 @@ paths:
               $ref: '#/components/schemas/createChatroom'
             example:
               consultant: 61788394ff9dbd1ffffad737
-              anonym: 6173d2e7365b7f5cefd2017b
               chatroom_token: rtoken
             
       responses:
