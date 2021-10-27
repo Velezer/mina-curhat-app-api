@@ -260,7 +260,7 @@ paths:
       tags:
         - chatroom
       summary: create chatroom
-      description: it depends on your role in jwt token
+      description: only anonym can create chatroom
       requestBody:
         required: true
         description: chatroom data
