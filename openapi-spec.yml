@@ -78,6 +78,14 @@ components:
           enum:
             - male
             - female
+    consultantLogin:
+      type: object
+      properties:
+        name:
+          type: string
+        password:
+          type: string
+      
 
     basicMessage:
       type: object
@@ -215,6 +223,43 @@ paths:
                     __v: 0
                   
   
+  /api/consultants/login:
+    post:
+      summary: login as a consultants
+      description: for getting jwt token
+      tags:
+        - consultants
+      requestBody:
+        required: true
+        description: consultant data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/consultantLogin'
+            example:
+              name: name
+              password: password
+                
+      responses:
+        201:
+          description: consultant created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/basicMessage'
+        409:
+          description: consultant already exist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/basicMessage'
+        400:
+          description: Validation failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/validationError'
+                
   /api/consultants/register:
     post:
       summary: register as a consultants
@@ -253,6 +298,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/validationError'
+
+
   /api/chatrooms:
     post:
       security:

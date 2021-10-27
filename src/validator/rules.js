@@ -21,6 +21,11 @@ exports.consultant = [
         .isIn(['consultant', 'ustadz']).bail(),
     validate
 ]
+exports.loginConsultant = [
+    body(`name`, `name is empty`).notEmpty(),
+    body(`password`, `password is empty`).notEmpty(),
+    validate
+]
 
 exports.anonym = [
     body(`name`, `name is empty`).notEmpty(),
