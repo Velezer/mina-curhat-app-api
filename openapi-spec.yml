@@ -209,13 +209,13 @@ paths:
                 $ref: '#/components/schemas/getAllConsultants'
               example:
                 message: success
-                data: [{
-                    "_id": "6173d2e7365b7f5cefd2017d",
-                    "name": "secretConsultant",
-                    "role": "consultant",
-                    "gender": "female",
-                    "__v": 0
-                  }]
+                data: 
+                  - _id: 6173d2e7365b7f5cefd2017d,
+                    name: secretConsultant,
+                    role: consultant,
+                    gender: female,
+                    __v: 0
+                  
   
   /api/consultants/register:
     post:

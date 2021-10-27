@@ -1,13 +1,13 @@
 const express = require("express")
 const errorsMiddleware = require("./middleware/errors")
-const cors = require('cors');
+const cors = require('cors')
 
 
 module.exports = (db, bcrypt, jwt) => {
 
   const app = express()
 
-  app.use(cors({ credentials: true, origin: '*' }));
+  app.use(cors({ credentials: true, origin: '*' }))
 
   app.use(express.json())
   app.use(express.urlencoded({ extended: true }))
@@ -29,9 +29,11 @@ module.exports = (db, bcrypt, jwt) => {
   app.use('/api/consultants', require("./routes/consultant"))
   app.use('/api/chatrooms', require("./routes/chatrooms"))
   app.use('/api/anonym', require("./routes/anonym"))
-
-  app.use(errorsMiddleware.mongooseError);
-  app.use(errorsMiddleware.expressError);
+  
+  app.use('/api/docs', require("./routes/docs"))
+  
+  app.use(errorsMiddleware.mongooseError)
+  app.use(errorsMiddleware.expressError)
 
   return app
 }
