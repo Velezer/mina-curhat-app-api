@@ -31,7 +31,7 @@ components:
           enum:
             - male
             - female
-    anonymLoginSuccess:
+    loginSuccess:
       type: object
       properties:
         message:
@@ -186,7 +186,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/anonymLoginSuccess'
+                $ref: '#/components/schemas/loginSuccess'
         409:
           description: Conflict, anonym name has taken
           content:
@@ -241,18 +241,13 @@ paths:
               password: password
                 
       responses:
-        201:
-          description: consultant created
+        200:
+          description: login success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/basicMessage'
-        409:
-          description: consultant already exist
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/basicMessage'
+                $ref: '#/components/schemas/consultantLogin'
+
         400:
           description: Validation failed
           content:
