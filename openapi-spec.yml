@@ -221,6 +221,20 @@ paths:
                     role: consultant,
                     gender: female,
                     __v: 0
+    delete:
+      summary: delete consultant
+      description: delete based on jwt_token
+      tags:
+        - consultants
+      security:
+        - jwt_token: []
+      responses:
+        200:
+          description: deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/basicMessage'
                   
   
   /api/consultants/login:

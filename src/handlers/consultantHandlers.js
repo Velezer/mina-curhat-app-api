@@ -23,10 +23,10 @@ exports.register = async (req, res, next) => {
 }
 
 exports.login = async (req, res, next) => {
-    const { name, password, gender, role } = req.body
+    const { name, password } = req.body
 
     const { Consultant } = req.db
-    const found = await Consultant.findOne({ name, gender, role }).select('+password')
+    const found = await Consultant.findOne({ name }).select('+password')
     if (found === null) {
         const err = new Error(`user ${name} not found`)
         err.code = 404
