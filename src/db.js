@@ -2,17 +2,10 @@ const mongoose = require("mongoose")
 
 require("dotenv").config()
 
-let DB_URI = process.env.DB_URI
-
-if (process.env.ENVIRONTMENT === 'test') {
-    DB_URI = process.env.DB_URI_TEST
-}
-
-function dbConnect() {
+function dbConnect(DB_URI = process.env.DB_URI) {
     mongoose.connect(DB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
         .catch(err => console.error(err))
     return mongoose.connection
-    
 }
 
 function dbClose() {

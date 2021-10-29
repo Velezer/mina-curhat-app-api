@@ -1,4 +1,4 @@
-process.env.ENVIRONTMENT = 'test'
+require("dotenv").config()
 const db = require("../db")
 const bcrypt = require("bcrypt")
 const jwt = require("jwt-then")
@@ -8,10 +8,10 @@ const createApp = require("../app")
 
 const app = createApp(db, bcrypt, jwt)
 
-jest.setTimeout(11000)
+jest.setTimeout(31000)
 
 beforeAll((done) => {
-    db.dbConnect()
+    db.dbConnect(process.env.DB_URI_TEST)
         .once('open', () => done())
         .on('error', (err) => done(err))
 })

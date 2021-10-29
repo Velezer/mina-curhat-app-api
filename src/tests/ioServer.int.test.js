@@ -10,10 +10,10 @@ const server = createServer(db, bcrypt, jwt)
 let port = 5556
 server.listen(port)
 
-jest.setTimeout(20000)
+jest.setTimeout(30000)
 
 beforeAll((done) => {
-    db.dbConnect()
+    db.dbConnect(process.env.DB_URI_TEST)
         .once('open', () => done())
         .on('error', (err) => done(err))
 })
