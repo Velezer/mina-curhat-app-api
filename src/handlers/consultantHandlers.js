@@ -43,7 +43,7 @@ exports.login = async (req, res, next) => {
     }
 
     const jwt = req.jwt
-    const token = await jwt.sign({ _id: found._id, name, gender, role, model: 'Consultant' }, process.env.JWT_KEY, {
+    const token = await jwt.sign({ _id: found._id, name, gender: found.gender, role: found.role, model: 'Consultant' }, process.env.JWT_KEY, {
         expiresIn: `7d`
     })
 
