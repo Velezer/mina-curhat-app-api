@@ -185,6 +185,7 @@ describe('handler consultants --- /api/consultants', () => {
     it('DELETE / --> 200 consultant deleted', async () => {
         jwt.verify.mockResolvedValueOnce(payloadConsultant)
         db.Consultant.findOne.mockImplementationOnce(() => ({ select: jest.fn().mockResolvedValue({}) }))
+        db.Consultant.deleteOne.mockResolvedValueOnce({})
         await request(app).delete('/api/consultants/')
             .set('Authorization', `Bearer ${jwt_token}`)
             .send(consultantData)

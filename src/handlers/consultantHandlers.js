@@ -64,7 +64,7 @@ exports.getConsultants = async (req, res) => {
     })
 }
 
-exports.deleteConsultant = async (req, res) => {
+exports.deleteConsultant = async (req, res, next) => {
     const { _id } = req.payload
 
     const { Consultant } = req.db
@@ -74,6 +74,8 @@ exports.deleteConsultant = async (req, res) => {
         err.code = 404
         return next(err)
     }
+    await Consultant.deleteOne({ _id }).catch(err => next(err))
+
     res.status(200).json({
         message: `consultant deleted`,
     })
