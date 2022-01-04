@@ -5,5 +5,7 @@ You can see the interactive documentation in [here](https://mina-curhat-api.hero
 I'm sorry. I have not provided AsyncAPI documentation for the socket.io part
 
 ### Frontend
-[project's link](https://github.com/Zulfaabam/mina-app)
-[deployed on vercel](https://mina-app.vercel.app/)
+You can find the frontend project in [here](https://github.com/Zulfaabam/mina-app)
+
+The deployed version [here](https://mina-app.vercel.app/)
+But, my friend have not implemented the consume api
